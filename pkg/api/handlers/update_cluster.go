@@ -27,6 +27,7 @@ func (d *updateCluster) Handle(params operations.UpdateClusterParams, principal 
 			if pool.Image == "" {
 				nodePools[i].Image = DEFAULT_IMAGE
 			}
+			//Set AZ here
 		}
 		// Update nodepool
 		kluster.Spec.NodePools = nodePools

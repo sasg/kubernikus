@@ -652,6 +652,8 @@ func (op *GroundControl) discoverOpenstackInfo(kluster *v1.Kluster) error {
 		return fmt.Errorf("Security group %s invalid: ", err)
 	}
 
+	// Set AZ ? no kluster but pool object
+
 	return nil
 }
 

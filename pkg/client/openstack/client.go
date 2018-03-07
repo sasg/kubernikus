@@ -582,6 +582,7 @@ func (c *client) CreateNode(kluster *kubernikus_v1.Kluster, pool *models.NodePoo
 	name = SimpleNameGenerator.GenerateName(fmt.Sprintf("%v-%v-", kluster.Spec.Name, pool.Name))
 
 	configDrive := true
+	// Set AZ in gopher
 	server, err := compute.Create(client, servers.CreateOpts{
 		Name:           name,
 		FlavorName:     pool.Flavor,

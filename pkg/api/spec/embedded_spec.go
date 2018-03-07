@@ -480,6 +480,10 @@ func init() {
         "flavor"
       ],
       "properties": {
+        "availabilityZone": {
+          "type": "string",
+          "x-nullable": false
+        },
         "config": {
           "$ref": "#/definitions/NodePoolConfig"
         },
