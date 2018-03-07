@@ -19,7 +19,7 @@ import (
 type OpenstackMetadata struct {
 
 	// availability zones
-	AvailabilityZones []AvailabiltyZone `json:"availabilityZones"`
+	AvailabilityZones []AvailabilityZone `json:"availabilityZones"`
 
 	// flavors
 	Flavors []Flavor `json:"flavors"`
@@ -186,19 +186,19 @@ func (m *OpenstackMetadata) UnmarshalBinary(b []byte) error {
 	return nil
 }
 
-// AvailabiltyZone availabilty zone
-// swagger:model AvailabiltyZone
-type AvailabiltyZone struct {
+// AvailabilityZone availability zone
+// swagger:model AvailabilityZone
+type AvailabilityZone struct {
 
-	// alias
-	Alias string `json:"alias,omitempty"`
+	// id
+	ID string `json:"id,omitempty"`
 
 	// name
 	Name string `json:"name,omitempty"`
 }
 
-// Validate validates this availabilty zone
-func (m *AvailabiltyZone) Validate(formats strfmt.Registry) error {
+// Validate validates this availability zone
+func (m *AvailabilityZone) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if len(res) > 0 {
@@ -208,7 +208,7 @@ func (m *AvailabiltyZone) Validate(formats strfmt.Registry) error {
 }
 
 // MarshalBinary interface implementation
-func (m *AvailabiltyZone) MarshalBinary() ([]byte, error) {
+func (m *AvailabilityZone) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -216,8 +216,8 @@ func (m *AvailabiltyZone) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *AvailabiltyZone) UnmarshalBinary(b []byte) error {
-	var res AvailabiltyZone
+func (m *AvailabilityZone) UnmarshalBinary(b []byte) error {
+	var res AvailabilityZone
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

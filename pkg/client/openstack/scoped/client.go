@@ -12,6 +12,7 @@ import (
 	"github.com/gophercloud/gophercloud/openstack/networking/v2/networks"
 	"github.com/gophercloud/gophercloud/openstack/networking/v2/ports"
 	"github.com/gophercloud/gophercloud/openstack/networking/v2/subnets"
+	"github.com/gophercloud/gophercloud/openstack/sharedfilesystems/v2/availabilityzones"
 	"github.com/gophercloud/gophercloud/pagination"
 
 	"github.com/sapcc/kubernikus/pkg/api/models"
@@ -66,10 +67,11 @@ func (c *client) Authenticate(authOptions *tokens.AuthOptions) error {
 
 func (c *client) GetMetadata() (metadata *models.OpenstackMetadata, err error) {
 	metadata = &models.OpenstackMetadata{
-		Flavors:        make([]models.Flavor, 0),
-		KeyPairs:       make([]*models.KeyPair, 0),
-		Routers:        make([]*models.Router, 0),
-		SecurityGroups: make([]*models.SecurityGroup, 0),
+		Flavors:           make([]models.Flavor, 0),
+		KeyPairs:          make([]*models.KeyPair, 0),
+		Routers:           make([]*models.Router, 0),
+		SecurityGroups:    make([]*models.SecurityGroup, 0),
+		AvailabilityZones: make([]models.AvailabilityZone, 0),
 	}
 
 	if metadata.Routers, err = c.getRouters(); err != nil {
@@ -87,7 +89,10 @@ func (c *client) GetMetadata() (metadata *models.OpenstackMetadata, err error) {
 	if metadata.Flavors, err = c.getFlavors(); err != nil {
 		return metadata, err
 	}
-	// Get AZ's here
+
+	if metadata.AvailabilityZones, err = c.getAvailabilityZones(); err != nil {
+		return metadata, err
+	}
 
 	return metadata, nil
 }
@@ -242,4 +247,21 @@ func (c *client) getFlavors() ([]models.Flavor, error) {
 	models.SortFlavors(result)
 
 	return result, err
+}
+
+func (c *client) getAvailabilityZones() ([]models.AvailabilityZone, error) {
+	result := []models.AvailabilityZone{}
+	allPages, err := availabilityzones.List(c.IdentityClient).AllPages()
+	if err != nil {
+		return nil, err
+	}
+	zones, err := availabilityzones.ExtractAvailabilityZones(allPages)
+	if err != nil {
+		return nil, err
+	}
+	for _, zone := range zones {
+		result = append(result, models.AvailabilityZone{ID: zone.ID, Name: zone.Name})
+	}
+
+	return result, nil
 }

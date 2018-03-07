@@ -552,14 +552,14 @@ func init() {
           "items": {
             "type": "object",
             "properties": {
-              "alias": {
+              "id": {
                 "type": "string"
               },
               "name": {
                 "type": "string"
               }
             },
-            "x-go-name": "AvailabiltyZone",
+            "x-go-name": "AvailabilityZone",
             "x-nullable": false
           }
         },
