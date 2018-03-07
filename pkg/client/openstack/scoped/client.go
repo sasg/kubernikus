@@ -87,6 +87,8 @@ func (c *client) GetMetadata() (metadata *models.OpenstackMetadata, err error) {
 	if metadata.Flavors, err = c.getFlavors(); err != nil {
 		return metadata, err
 	}
+	// Get AZ's here
+
 	return metadata, nil
 }
 

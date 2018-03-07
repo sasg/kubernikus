@@ -547,6 +547,22 @@ func init() {
     "OpenstackMetadata": {
       "type": "object",
       "properties": {
+        "availabilityZones": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "alias": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "x-go-name": "AvailabiltyZone",
+            "x-nullable": false
+          }
+        },
         "flavors": {
           "type": "array",
           "items": {
