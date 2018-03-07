@@ -40,7 +40,6 @@ func (d *createCluster) Handle(params operations.CreateClusterParams, principal 
 		if pool.Image == "" {
 			spec.NodePools[i].Image = DEFAULT_IMAGE
 		}
-		//Set default AZ here
 	}
 	kluster, err := kubernikus.NewKlusterFactory().KlusterFor(spec)
 	if err != nil {
