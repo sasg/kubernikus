@@ -205,12 +205,12 @@ definitions:
         items:
           x-nullable: false
           type: object
-          x-go-name: AvailabiltyZone
+          x-go-name: AvailabilityZone
           properties:
             name:
               type: string
-            alias:
-              type: string
+            available:
+              type: boolean
       flavors:
         type: array
         items:

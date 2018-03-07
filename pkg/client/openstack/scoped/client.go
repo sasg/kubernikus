@@ -4,6 +4,7 @@ import (
 	"github.com/go-kit/kit/log"
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
+	"github.com/gophercloud/gophercloud/openstack/compute/v2/extensions/availabilityzones"
 	"github.com/gophercloud/gophercloud/openstack/compute/v2/extensions/keypairs"
 	"github.com/gophercloud/gophercloud/openstack/compute/v2/extensions/secgroups"
 	"github.com/gophercloud/gophercloud/openstack/compute/v2/flavors"
@@ -12,7 +13,6 @@ import (
 	"github.com/gophercloud/gophercloud/openstack/networking/v2/networks"
 	"github.com/gophercloud/gophercloud/openstack/networking/v2/ports"
 	"github.com/gophercloud/gophercloud/openstack/networking/v2/subnets"
-	"github.com/gophercloud/gophercloud/openstack/sharedfilesystems/v2/availabilityzones"
 	"github.com/gophercloud/gophercloud/pagination"
 
 	"github.com/sapcc/kubernikus/pkg/api/models"
@@ -251,7 +251,7 @@ func (c *client) getFlavors() ([]models.Flavor, error) {
 
 func (c *client) getAvailabilityZones() ([]models.AvailabilityZone, error) {
 	result := []models.AvailabilityZone{}
-	allPages, err := availabilityzones.List(c.IdentityClient).AllPages()
+	allPages, err := availabilityzones.List(c.ComputeClient).AllPages()
 	if err != nil {
 		return nil, err
 	}
@@ -260,7 +260,10 @@ func (c *client) getAvailabilityZones() ([]models.AvailabilityZone, error) {
 		return nil, err
 	}
 	for _, zone := range zones {
-		result = append(result, models.AvailabilityZone{ID: zone.ID, Name: zone.Name})
+		// only report on available zones
+		if zone.ZoneState.Available {
+			result = append(result, models.AvailabilityZone{Name: zone.ZoneName, Available: zone.ZoneState.Available})
+		}
 	}
 
 	return result, nil
